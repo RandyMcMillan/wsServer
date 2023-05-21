@@ -29,6 +29,16 @@
 		4B68415C2A1AC67D00759462 /* ws.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B6840882A1AC37500759462 /* ws.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		4BB6688A2A1AD2F00008C52D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4BB668862A1AD2F00008C52D /* echo.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4B68417A2A1ACC5F00759462;
+			remoteInfo = echo;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		4B98AC682A1AC2D0002175A5 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -55,8 +65,8 @@
 		4B68410B2A1AC3BB00759462 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		4B6841162A1AC45600759462 /* libws.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libws.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B6841652A1AC6F800759462 /* doc */ = {isa = PBXFileReference; lastKnownFileType = folder; path = doc; sourceTree = "<group>"; };
-		4B6841682A1AC74500759462 /* examples */ = {isa = PBXFileReference; lastKnownFileType = folder; path = examples; sourceTree = "<group>"; };
 		4B98AC6A2A1AC2D0002175A5 /* wsServer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = wsServer; sourceTree = BUILT_PRODUCTS_DIR; };
+		4BB668862A1AD2F00008C52D /* echo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = echo.xcodeproj; path = examples/echo.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,7 +114,7 @@
 		4B98AC612A1AC2D0002175A5 = {
 			isa = PBXGroup;
 			children = (
-				4B6841682A1AC74500759462 /* examples */,
+				4BB668862A1AD2F00008C52D /* echo.xcodeproj */,
 				4B6841652A1AC6F800759462 /* doc */,
 				4B98AC6C2A1AC2D0002175A5 /* wsServer */,
 				4B98AC6B2A1AC2D0002175A5 /* Products */,
@@ -128,6 +138,14 @@
 				4B6840782A1AC37500759462 /* src */,
 			);
 			name = wsServer;
+			sourceTree = "<group>";
+		};
+		4BB668872A1AD2F00008C52D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4BB6688B2A1AD2F00008C52D /* echo */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,6 +238,12 @@
 			mainGroup = 4B98AC612A1AC2D0002175A5;
 			productRefGroup = 4B98AC6B2A1AC2D0002175A5 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 4BB668872A1AD2F00008C52D /* Products */;
+					ProjectRef = 4BB668862A1AD2F00008C52D /* echo.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				4B98AC692A1AC2D0002175A5 /* wsServer */,
@@ -227,6 +251,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		4BB6688B2A1AD2F00008C52D /* echo */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = echo;
+			remoteRef = 4BB6688A2A1AD2F00008C52D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4B6841132A1AC45600759462 /* Sources */ = {
