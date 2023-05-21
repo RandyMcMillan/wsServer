@@ -26,6 +26,7 @@ tests/fuzzy/out/
 examples/echo/echo
 examples/ping/ping
 
+.DS_Store
 **.DS_Store
 wsServer.xcodeproj/project.xcworkspace/xcuserdata/
 wsServer.xcodeproj/xcuserdata/
