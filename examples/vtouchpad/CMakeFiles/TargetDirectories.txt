@@ -1,0 +1,3 @@
+/Volumes/git/nostr-async/wsServer/examples/vtouchpad/CMakeFiles/vtouchpad.dir
+/Volumes/git/nostr-async/wsServer/examples/vtouchpad/CMakeFiles/edit_cache.dir
+/Volumes/git/nostr-async/wsServer/examples/vtouchpad/CMakeFiles/rebuild_cache.dir

@@ -25,3 +25,7 @@ tests/wsserver_autobahn/report
 tests/fuzzy/out/
 examples/echo/echo
 examples/ping/ping
+
+**.DS_Store
+wsServer.xcodeproj/project.xcworkspace/xcuserdata/
+
