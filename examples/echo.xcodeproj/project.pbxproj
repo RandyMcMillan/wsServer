@@ -137,11 +137,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4B6841812A1ACC5F00759462 /* Build configuration list for PBXNativeTarget "echo" */;
 			buildPhases = (
+				4BB6686D2A1AD0330008C52D /* ShellScript */,
 				4BB668212A1ACCD40008C52D /* Headers */,
 				4B6841762A1ACC5F00759462 /* Sources */,
 				4B6841772A1ACC5F00759462 /* Frameworks */,
 				4B6841782A1ACC5F00759462 /* CopyFiles */,
-				4BB6686D2A1AD0330008C52D /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -199,8 +199,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "make
-";
+			shellScript = "## make\nls .\necho $SRCROOT\nls $SRCROOT\n## sls $SRCROOT/Build/Products/Debug\n## open ./echo.html && ./echo \n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
