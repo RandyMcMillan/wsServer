@@ -28,4 +28,5 @@ examples/ping/ping
 
 **.DS_Store
 wsServer.xcodeproj/project.xcworkspace/xcuserdata/
-
+wsServer.xcodeproj/xcuserdata/
+wsServer.xcworkspace/xcuserdata/
