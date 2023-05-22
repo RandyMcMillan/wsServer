@@ -19,7 +19,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#ifndef WS_H
 #include <ws.h>
+#endif
 
 /**
  * @dir examples/

@@ -17,7 +17,9 @@
 #define _POSIX_C_SOURCE 200809L
 #include <base64.h>
 #include <sha1.h>
+#ifndef WS_H
 #include <ws.h>
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>

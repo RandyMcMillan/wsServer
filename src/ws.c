@@ -48,7 +48,9 @@ typedef int socklen_t;
 #include <unistd.h>
 
 #include <utf8.h>
+#ifndef WS_H
 #include <ws.h>
+#endif
 
 /**
  * @dir src/
@@ -361,7 +363,7 @@ static void *close_timeout(void *p)
 	if (state == WS_STATE_CLOSED)
 		goto quit;
 
-	DEBUG("Timer expired, closing client %d\n", conn->client_sock);
+	DEBUG_WS("Timer expired, closing client %d\n", conn->client_sock);
 
 	close_client(conn, 1);
 quit:
@@ -756,7 +758,7 @@ int ws_close_client(ws_cli_conn_t *client)
 	if (ws_sendframe(
 			client, (const char *)clse_code, sizeof(char) * 2, WS_FR_OP_CLSE) < 0)
 	{
-		DEBUG("An error has occurred while sending closing frame!\n");
+		DEBUG_WS("An error has occurred while sending closing frame!\n");
 		return (-1);
 	}
 
@@ -810,7 +812,7 @@ static int do_handshake(struct ws_frame_data *wfd)
 	p = strstr((const char *)wfd->frm, "\r\n\r\n");
 	if (p == NULL)
 	{
-		DEBUG("An empty line with \\r\\n was expected!\n");
+		DEBUG_WS("An empty line with \\r\\n was expected!\n");
 		return (-1);
 	}
 	wfd->amt_read = n;
@@ -819,12 +821,12 @@ static int do_handshake(struct ws_frame_data *wfd)
 	/* Get response. */
 	if (get_handshake_response((char *)wfd->frm, &response) < 0)
 	{
-		DEBUG("Cannot get handshake response, request was: %s\n", wfd->frm);
+		DEBUG_WS("Cannot get handshake response, request was: %s\n", wfd->frm);
 		return (-1);
 	}
 
 	/* Valid request. */
-	DEBUG("Handshaked, response: \n"
+	DEBUG_WS("Handshaked, response: \n"
 		  "------------------------------------\n"
 		  "%s"
 		  "------------------------------------\n",
@@ -834,7 +836,7 @@ static int do_handshake(struct ws_frame_data *wfd)
 	if (SEND(wfd->client, response, strlen(response)) < 0)
 	{
 		free(response);
-		DEBUG("As error has occurred while handshaking!\n");
+		DEBUG_WS("As error has occurred while handshaking!\n");
 		return (-1);
 	}
 
@@ -894,7 +896,7 @@ static int do_close(struct ws_frame_data *wfd, int close_code)
 		if (ws_sendframe(wfd->client, (const char *)wfd->msg_ctrl, sizeof(char) * 2,
 				WS_FR_OP_CLSE) < 0)
 		{
-			DEBUG("An error has occurred while sending closing frame!\n");
+			DEBUG_WS("An error has occurred while sending closing frame!\n");
 			return (-1);
 		}
 		return (0);
@@ -905,7 +907,7 @@ send:
 	if (ws_sendframe(wfd->client, (const char *)wfd->msg_ctrl, wfd->frame_size,
 			WS_FR_OP_CLSE) < 0)
 	{
-		DEBUG("An error has occurred while sending closing frame!\n");
+		DEBUG_WS("An error has occurred while sending closing frame!\n");
 		return (-1);
 	}
 	return (0);
@@ -934,7 +936,7 @@ static int do_pong(struct ws_frame_data *wfd, uint64_t frame_size)
 			wfd->client, (const char *)wfd->msg_ctrl, frame_size, WS_FR_OP_PONG) < 0)
 	{
 		wfd->error = 1;
-		DEBUG("An error has occurred while ponging!\n");
+		DEBUG_WS("An error has occurred while ponging!\n");
 		return (-1);
 	}
 	return (0);
@@ -961,7 +963,7 @@ static inline int next_byte(struct ws_frame_data *wfd)
 		if ((n = RECV(wfd->client, wfd->frm, sizeof(wfd->frm))) <= 0)
 		{
 			wfd->error = 1;
-			DEBUG("An error has occurred while trying to read next byte\n");
+			DEBUG_WS("An error has occurred while trying to read next byte\n");
 			return (-1);
 		}
 		wfd->amt_read = (size_t)n;
@@ -1059,7 +1061,7 @@ static int read_frame(struct ws_frame_data *wfd,
 	 */
 	if (*frame_size > MAX_FRAME_LENGTH)
 	{
-		DEBUG("Current frame from client %d, exceeds the maximum\n"
+		DEBUG_WS("Current frame from client %d, exceeds the maximum\n"
 			  "amount of bytes allowed (%" PRId64 "/%d)!",
 			wfd->client->client_sock, *frame_size + *frame_length, MAX_FRAME_LENGTH);
 
@@ -1102,7 +1104,7 @@ static int read_frame(struct ws_frame_data *wfd,
 				msg, sizeof(unsigned char) * (*msg_idx + *frame_length + is_fin));
 			if (!tmp)
 			{
-				DEBUG("Cannot allocate memory, requested: % " PRId64 "\n",
+				DEBUG_WS("Cannot allocate memory, requested: % " PRId64 "\n",
 					(*msg_idx + *frame_length + is_fin));
 
 				wfd->error = 1;
@@ -1133,7 +1135,7 @@ static int read_frame(struct ws_frame_data *wfd,
 			tmp = realloc(msg, sizeof(unsigned char) * (*msg_idx + 1));
 			if (!tmp)
 			{
-				DEBUG("Cannot allocate memory, requested: %" PRId64 "\n",
+				DEBUG_WS("Cannot allocate memory, requested: %" PRId64 "\n",
 					(*msg_idx + 1));
 
 				wfd->error = 1;
@@ -1220,7 +1222,7 @@ static int next_frame(struct ws_frame_data *wfd)
 		 */
 		if (cur_byte & 0x70)
 		{
-			DEBUG("RSV is set while wsServer do not negotiate extensions!\n");
+			DEBUG_WS("RSV is set while wsServer do not negotiate extensions!\n");
 			wfd->error = 1;
 			break;
 		}
@@ -1243,7 +1245,7 @@ static int next_frame(struct ws_frame_data *wfd)
 			(wfd->frame_type != -1 && !is_control_frame(opcode) &&
 				opcode != WS_FR_OP_CONT))
 		{
-			DEBUG("Unexpected frame was received!, opcode: %d, previous: %d\n",
+			DEBUG_WS("Unexpected frame was received!, opcode: %d, previous: %d\n",
 				opcode, wfd->frame_type);
 			wfd->error = 1;
 			break;
@@ -1265,7 +1267,7 @@ static int next_frame(struct ws_frame_data *wfd)
 			if (get_client_state(wfd->client) == WS_STATE_CLOSING &&
 				opcode != WS_FR_OP_CLSE)
 			{
-				DEBUG("Unexpected frame received, expected CLOSE (%d), "
+				DEBUG_WS("Unexpected frame received, expected CLOSE (%d), "
 					  "received: (%d)",
 					WS_FR_OP_CLSE, opcode);
 				wfd->error = 1;
@@ -1287,7 +1289,7 @@ static int next_frame(struct ws_frame_data *wfd)
 			 */
 			if (is_control_frame(opcode) && (!is_fin || frame_length > 125))
 			{
-				DEBUG("Control frame bigger than 125 octets or not a FIN "
+				DEBUG_WS("Control frame bigger than 125 octets or not a FIN "
 					  "frame!\n");
 				wfd->error = 1;
 				break;
@@ -1417,7 +1419,7 @@ static int next_frame(struct ws_frame_data *wfd)
 		/* Anything else (unsupported frames). */
 		else
 		{
-			DEBUG("Unsupported frame opcode: %d\n", opcode);
+			DEBUG_WS("Unsupported frame opcode: %d\n", opcode);
 			/* We should consider as error receive an unknown frame. */
 			wfd->frame_type = opcode;
 			wfd->error = 1;
